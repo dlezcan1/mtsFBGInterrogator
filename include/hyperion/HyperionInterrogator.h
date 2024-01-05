@@ -3,7 +3,7 @@
 
 #include <cisstCommon.h>
 
-#include "HLibrary.h"
+#include "hLibrary.h"
 
 #include "mtsFBGSensor/Interrogator.h"
 
