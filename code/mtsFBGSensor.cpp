@@ -72,18 +72,18 @@ void mtsFBGSensor::SetupInterfaces()
     m_StateTable.AddData(m_Peaks, "Peaks");
 
     // Add the interface
-    mtsInterfaceProvided* intfProvided = this->AddInterfaceProvided("FBGSensor");
+    mtsInterfaceProvided* intfProvided = this->AddInterfaceProvided("ProvidesFBGSensor");
     if (!intfProvided)
     {
-        CMN_LOG_CLASS_INIT_ERROR << "Error adding \"FBGSensor\" provided interface \"" 
+        CMN_LOG_CLASS_INIT_ERROR << "Error adding \"ProvidesFBGSensor\" provided interface \"" 
                                  << this->GetName()
                                  << "\"!" << std::endl;
         return;
     }
 
-    if (!intfProvided->AddCommandReadState(m_StateTable, m_Peaks, "GetPeaksState"))
+    if (!intfProvided->AddCommandReadState(m_StateTable, m_Peaks, "GetFBGPeaksState"))
     {
-        CMN_LOG_CLASS_INIT_ERROR << "Failed to add mtsFBGSensor::GetPeaksState to \""
+        CMN_LOG_CLASS_INIT_ERROR << "Failed to add mtsFBGSensor::GetFBGPeaksState to \""
                                  << intfProvided->GetFullName()
                                  << "\"!" << std::endl;
     }
