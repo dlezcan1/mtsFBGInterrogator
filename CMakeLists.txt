@@ -21,6 +21,14 @@ set(mtsFBGSensor_SOURCE_FILES
     code/hLibrary.cpp
     code/HyperionInterrogator.cpp
 
+    # cisst MultiTask FBGTools
+    code/GreenDualTool.cpp
+    code/CannulationTool.cpp
+    code/ThreeDOFTool.cpp
+
+    # filter library
+    code/SensorOneEuroFilter.cpp
+
     # cisst MultiTask FBGSensor
     code/mtsFBGSensor.cpp
     code/Interrogator.cpp
@@ -32,6 +40,16 @@ set(mtsFBGSensor_HEADER_FILES
     include/hyperion/hLibrary.h
     include/hyperion/HyperionInterrogator.h
     
+    # cisst MultiTask FBGTools
+    include/mtsFBGTool/FBGToolFactory.h
+    include/mtsFBGTool/FBGToolInterface.h
+    include/mtsFBGTool/GreenDualTool.h
+    include/mtsFBGTool/CannulationTool.h
+    include/mtsFBGTool/ThreeDOFTool.h
+
+    # filter library
+    include/SensorFilters/SensorOneEuroFilter.h
+
     # cisst MultiTask FBGSensor
     include/mtsFBGSensor/mtsFBGSensor.h
     include/mtsFBGSensor/Interrogator.h

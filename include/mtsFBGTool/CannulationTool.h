@@ -14,10 +14,13 @@ public:
     CannulationTool(const std::string& filename);
     virtual ~CannulationTool();
 
-    virtual mtsDoubleVec GetForcesTip(const mtsDoubleVec& wavelengths);
-    virtual mtsDoubleVec GetForcesSclera(const mtsDoubleVec& wavelengths);
-    virtual mtsDoubleVec GetMomentSclera(const mtsDoubleVec& wavelengths);
+    virtual mtsDoubleVec GetForcesTip(const mtsDoubleVec& processedWavelengths);
+    virtual mtsDoubleVec GetForcesSclera(const mtsDoubleVec& processedWavelengths);
     
+protected:
+    // Calibration matrices
+    mtsDoubleMat m_CalibrationMatrixTip;
+
 
 }; // class: CannulationTool
 

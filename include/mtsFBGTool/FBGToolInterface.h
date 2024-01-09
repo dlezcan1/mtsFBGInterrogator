@@ -11,6 +11,9 @@ class FBGToolInterface : public cmnGenericObject
 public:
     virtual ~FBGToolInterface(){}
 
+    inline virtual mtsStdString GetToolName()               const { return m_ToolName; }
+    inline virtual void GetToolName(mtsStdString& toolName) const {  toolName = m_ToolName; }
+    
     virtual mtsDoubleVec GetForcesTip(const mtsDoubleVec& processedWavelengths)    = 0;
     virtual mtsDoubleVec GetForcesSclera(const mtsDoubleVec& processedWavelengths) = 0;
     
@@ -45,7 +48,8 @@ public:
         return ProcessWavelengthSamples(mtsDoubleVec(wavelengths));
     }
 
-
+protected: 
+    mtsStdString m_ToolName;
     mtsDoubleVec m_BaseWavelengths;
 
 }; // abstract class: FBGToolInterface

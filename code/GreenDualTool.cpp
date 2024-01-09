@@ -1,8 +1,13 @@
 #include "mtsFBGTool/GreenDualTool.h"
 
+CMN_IMPLEMENT_SERVICES(GreenDualTool);
+
 GreenDualTool::GreenDualTool(const std::string& filename)
 {
     // TODO: load json parameters
+    // FIXME: assign tool name
+    m_ToolName = "GreenDualTool";
+     
     // FIXME
     m_DistanceScleraFBGs = 5.8891; 
 

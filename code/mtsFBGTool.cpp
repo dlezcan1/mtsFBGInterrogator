@@ -66,6 +66,8 @@ void mtsFBGTool::SetupInterfaces()
     providedInterface->AddCommandReadState(m_StateTable, m_ForcesScleraNorm, "GetMeasuredCartesianForcesScleraNorm");
     providedInterface->AddCommandReadState(m_StateTable, m_ForcesNorm,        "GetMeasuredCartesianForceNorm");
     providedInterface->AddCommandReadState(m_StateTable, m_ForcesDirection,   "GetMeasuredCartesianForceDirection");
+    
+    providedInterface->AddCommandRead(&FBGToolInterface::GetToolName, m_FBGTool.get(), "GetToolName");
 
     delete providedInterface;
     
