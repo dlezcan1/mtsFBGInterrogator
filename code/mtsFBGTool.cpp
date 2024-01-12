@@ -129,15 +129,11 @@ void mtsFBGTool::Run()
     m_ForcesTipNorm    = m_FBGTool->GetForcesTipNorm(m_ForcesTip);
     m_ForcesScleraNorm = m_FBGTool->GetForcesScleraNorm(m_ForcesSclera);
 
-    m_Forces.Assign(
-        m_ForcesTip[0], 
-        m_ForcesTip[1], 
-        m_ForcesScleraNorm.Data,
-        m_FilterOneEuroScleraForceY.filter(
-            m_ForcesSclera[1], timestamp
-        )
+    m_Forces = m_FBGTool->GetForces(processedPeaks);
+    m_Forces[m_Forces.size()] = m_FilterOneEuroScleraForceY.filter(
+        m_ForcesSclera[1], timestamp
     );
-    
+
     m_ForcesDirection[0] = atan2(m_Forces[1], m_Forces[0]);
     if (m_Forces.size() > 2)
         m_ForcesDirection[1] = atan2(m_Forces[2], m_Forces[1]);
