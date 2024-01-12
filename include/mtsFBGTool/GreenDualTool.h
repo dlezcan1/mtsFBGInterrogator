@@ -35,16 +35,6 @@ protected:
     std::vector<size_t> m_IndicesSclera2;
     std::vector<size_t> m_IndicesSclera3;
 
-    mtsDoubleVec PartitionWavelengths(const mtsDoubleVec& wavelengths, const std::vector<size_t>& indicesMap){
-        mtsDoubleVec partitionedWavelengths(indicesMap.size());
-        for (size_t i = 0; i < indicesMap.size(); i++)
-        {
-            partitionedWavelengths[i] = wavelengths[indicesMap[i]];
-        }
-
-        return partitionedWavelengths;
-    }
-
 }; // class: GreenDualTool
 
 CMN_DECLARE_SERVICES_INSTANTIATION(GreenDualTool);

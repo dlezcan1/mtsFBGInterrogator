@@ -14,9 +14,20 @@ public:
     inline virtual mtsStdString GetToolName()               const { return m_ToolName; }
     inline virtual void GetToolName(mtsStdString& toolName) const {  toolName = m_ToolName; }
     
+    virtual mtsDoubleVec GetForces(const mtsDoubleVec& processedWavelengths) { 
+        mtsDoubleVec forcesTip    = GetForcesTip(processedWavelengths);
+        mtsDoubleVec forcesSclera = GetForcesSclera(processedWavelengths);
+
+        return mtsDoubleVec({
+            forcesTip[0], 
+            forcesTip[1], 
+            GetForcesScleraNorm(forcesSclera)
+        });
+    }
     virtual mtsDoubleVec GetForcesTip(const mtsDoubleVec& processedWavelengths)    = 0;
     virtual mtsDoubleVec GetForcesSclera(const mtsDoubleVec& processedWavelengths) = 0;
     
+    virtual double       GetForcesNorm(const mtsDoubleVec& force)       const { return force.Norm(); }
     virtual double       GetForcesTipNorm(const mtsDoubleVec& force)    const { return force.Norm(); }
     virtual double       GetForcesScleraNorm(const mtsDoubleVec& force) const { return force.Norm(); }
 
@@ -51,5 +62,15 @@ public:
 protected: 
     mtsStdString m_ToolName;
     mtsDoubleVec m_BaseWavelengths;
+
+    static mtsDoubleVec PartitionWavelengths(const mtsDoubleVec& wavelengths, const std::vector<size_t>& indicesMap){
+        mtsDoubleVec partitionedWavelengths(indicesMap.size());
+        for (size_t i = 0; i < indicesMap.size(); i++)
+        {
+            partitionedWavelengths[i] = wavelengths[indicesMap[i]];
+        }
+
+        return partitionedWavelengths;
+    }
 
 }; // abstract class: FBGToolInterface

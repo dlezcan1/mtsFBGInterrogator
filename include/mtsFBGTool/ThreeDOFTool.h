@@ -1,8 +1,11 @@
 #pragma once
 
+#include <vector>
 #include <cisstMultiTask.h>
+#include <cisstNumerical/nmrBernsteinPolynomial.h>
 
 #include "FBGToolInterface.h"
+#include "UtilMath/BernsteinPolynomial.h"
 
 class ThreeDOFTool : public FBGToolInterface
 {
@@ -14,10 +17,13 @@ public:
     ThreeDOFTool(const std::string& filename);
     virtual ~ThreeDOFTool();
 
-    virtual mtsDoubleVec GetForcesTip(const mtsDoubleVec& wavelengths);
-    virtual mtsDoubleVec GetForcesSclera(const mtsDoubleVec& wavelengths);
-    virtual mtsDoubleVec GetMomentSclera(const mtsDoubleVec& wavelengths);
+    virtual mtsDoubleVec GetForcesTip(const mtsDoubleVec&    processedWavelengths);
+    virtual mtsDoubleVec GetForcesSclera(const mtsDoubleVec& processedWavelengths);
 
+protected:
+    BernsteinPolynomial m_ForceScleraPoly;
+    mtsDoubleMat        m_CalibrationMatrixTip;
+    std::vector<size_t> m_IndicesTip;
 
 }; // class: ThreeDOFTool
 
