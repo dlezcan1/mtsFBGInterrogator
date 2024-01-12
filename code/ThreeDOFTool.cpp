@@ -4,6 +4,8 @@ CMN_IMPLEMENT_SERVICES(ThreeDOFTool);
 
 ThreeDOFTool::ThreeDOFTool(const std::string& filename)
 {
+    m_ToolName = "ThreeDOFTool";
+
     // TODO: update json
     mtsDoubleVec coeffs({
         343.607,    21.867,     941.907,    -1391.959,  -11.469,    -961.724,
@@ -21,7 +23,7 @@ ThreeDOFTool::ThreeDOFTool(const std::string& filename)
         2818.355,   -1429.369,  1024.950,   -4672.584,  2654.343,   -1512.145,
         3905.311,   -2173.105,  1128.373
     });
-    m_ForceScleraPoly = BernsteinPolynomial(
+    m_ForceScleraPoly = std::make_unique<BernsteinPolynomial>(
         2,
         mtsDoubleVec(coeffs),
         mtsDoubleVec({-0.25751, -0.24409,   -0.22805,   -0.23807}),
@@ -38,6 +40,9 @@ ThreeDOFTool::ThreeDOFTool(const std::string& filename)
 
 
 }
+ThreeDOFTool::~ThreeDOFTool(){
+    
+}
 
 mtsDoubleVec ThreeDOFTool::GetForcesTip(const mtsDoubleVec& processedWavelengths)
 {
@@ -50,5 +55,5 @@ mtsDoubleVec ThreeDOFTool::GetForcesTip(const mtsDoubleVec& processedWavelengths
 
 mtsDoubleVec ThreeDOFTool::GetForcesSclera(const mtsDoubleVec& processedWavelengths)
 {
-    return {m_ForceScleraPoly.Evaluate(processedWavelengths)};
+    return {m_ForceScleraPoly->Evaluate(processedWavelengths)};
 }
