@@ -16,6 +16,10 @@ CannulationTool::CannulationTool(const std::string& filename)
     m_CalibrationMatrixTip.SetAll(1.0);
 }
 
+CannulationTool::~CannulationTool(){
+    
+}
+
 mtsDoubleVec CannulationTool::GetForcesTip(const mtsDoubleVec& processedWavelengths)
 {
     mtsDoubleVec forces(2);

@@ -7,7 +7,8 @@ ThreeDOFTool::ThreeDOFTool(const std::string& filename)
     m_ToolName = "ThreeDOFTool";
 
     // TODO: update json
-    mtsDoubleVec coeffs({
+    mtsDoubleVec coeffs, boundsMin, boundsMax;
+    coeffs.Assign(
         343.607,    21.867,     941.907,    -1391.959,  -11.469,    -961.724,
         1768.472,   -410.569,   684.794,    -712.421,   -467.469,   -1091.697,
         3277.402,   -650.449,   1369.105,   -5922.652,  2270.995,   -1416.751,
@@ -22,13 +23,11 @@ ThreeDOFTool::ThreeDOFTool(const std::string& filename)
         3360.556,   -2371.984,  2558.014,   -5132.822,  2669.627,   -1559.169,
         2818.355,   -1429.369,  1024.950,   -4672.584,  2654.343,   -1512.145,
         3905.311,   -2173.105,  1128.373
-    });
-    m_ForceScleraPoly = std::make_unique<BernsteinPolynomial>(
-        2,
-        mtsDoubleVec(coeffs),
-        mtsDoubleVec({-0.25751, -0.24409,   -0.22805,   -0.23807}),
-        mtsDoubleVec({0.25736,  0.24370,    0.23070,    0.10977})
     ); // FIXME
+    boundsMin.Assign(-0.25751, -0.24409,   -0.22805,   -0.23807); // FIXME
+    boundsMax.Assign( 0.25736,  0.24370,    0.23070,    0.10977); // FIXME
+    
+    m_ForceScleraPoly = std::make_unique<BernsteinPolynomial>(2,coeffs, boundsMin, boundsMax);
 
     m_IndicesTip = {0, 1, 2}; // FIXME
 

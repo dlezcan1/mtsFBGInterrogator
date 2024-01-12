@@ -40,6 +40,10 @@ GreenDualTool::GreenDualTool(const std::string& filename)
 
 } // constructor
 
+GreenDualTool::~GreenDualTool(){
+    
+}
+
 mtsDoubleVec GreenDualTool::GetForcesTip(const mtsDoubleVec& wavelengths)
 {   
     // grab the tip wavelengths
