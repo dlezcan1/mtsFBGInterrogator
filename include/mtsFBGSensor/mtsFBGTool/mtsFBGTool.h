@@ -4,7 +4,7 @@
 #include <cisstMultiTask.h>
 
 #include "FBGToolInterface.h"
-#include "SensorFilters/SensorOneEuroFilter.h"
+#include "mtsFBGSensor/SensorFilters/SensorOneEuroFilter.h"
 
 class mtsFBGTool : public mtsTaskContinuous
 {

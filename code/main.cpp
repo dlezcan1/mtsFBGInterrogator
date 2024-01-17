@@ -15,7 +15,7 @@ int main(int argc, char* argv[])
     mtsFBGSensor fbgSensorTask("FBGSensorTask");
     mtsFBGTool   fbgToolTask("FBGToolTask");
 
-    std::shared_ptr<mtsComponentManager> manager(mtsManagerLocal::GetInstance());
+    mtsComponentManager* manager = mtsManagerLocal::GetInstance();
 
     fbgSensorTask.Configure("192.168.1.101"); // FIXME: update to JSON file/argument
     fbgToolTask.Configure(""); // FIXME: update to FBG tool's JSON config file
@@ -34,29 +34,29 @@ int main(int argc, char* argv[])
         "sensor/measured_wavelengths"
     );
 
-    rosBridge.AddPublisherFromCommandRead<vctDoubleVec, geometry_msgs::Wrench>(
-        "RequiresFBGTool",
-        "GetMeasuredCartesianForces",
-        "tool/measured_forces_cf"
-    );
+    // rosBridge.AddPublisherFromCommandRead<vctDoubleVec, geometry_msgs::Wrench>(
+    //     "RequiresFBGTool",
+    //     "GetMeasuredCartesianForces",
+    //     "tool/measured_forces_cf"
+    // );
 
-    rosBridge.AddPublisherFromCommandRead<vctDoubleVec, geometry_msgs::Wrench>(
-        "RequiresFBGTool",
-        "GetMeasuredCartesianForcesTip",
-        "tool/measured_forces_tip_cf"
-    );
+    // rosBridge.AddPublisherFromCommandRead<vctDoubleVec, geometry_msgs::Wrench>(
+    //     "RequiresFBGTool",
+    //     "GetMeasuredCartesianForcesTip",
+    //     "tool/measured_forces_tip_cf"
+    // );
 
-    rosBridge.AddPublisherFromCommandRead<vctDoubleVec, geometry_msgs::Wrench>(
-        "RequiresFBGTool",
-        "GetMeasuredCartesianForcesSclera",
-        "tool/measured_forces_sclera_cf"
-    );
+    // rosBridge.AddPublisherFromCommandRead<vctDoubleVec, geometry_msgs::Wrench>(
+    //     "RequiresFBGTool",
+    //     "GetMeasuredCartesianForcesSclera",
+    //     "tool/measured_forces_sclera_cf"
+    // );
 
-    rosBridge.AddPublisherFromCommandRead<mtsStdString, std_msgs::String>(
-        "RequiresFBGTool",
-        "GetToolName",
-        "tool/name"
-    );
+    // rosBridge.AddPublisherFromCommandRead<mtsStdString, std_msgs::String>(
+    //     "RequiresFBGTool",
+    //     "GetToolName",
+    //     "tool/name"
+    // );
 
     // Connect components
     manager->AddComponent(&rosBridge);
