@@ -1,8 +1,8 @@
-#include "mtsFBGTool/mtsFBGTool.h"
+#include "mtsFBGSensor/mtsFBGTool/mtsFBGTool.h"
 
 #include <cisstOSAbstraction/osaSleep.h>
 
-#include "mtsFBGTool/FBGToolFactory.h"
+#include "mtsFBGSensor/mtsFBGTool/FBGToolFactory.h"
 
 CMN_IMPLEMENT_SERVICES(mtsFBGTool);
 

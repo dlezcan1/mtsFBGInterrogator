@@ -45,7 +45,7 @@
 #include <sys/select.h>
 #endif
 
-#include "hyperion/hLibrary.h"
+#include "mtsFBGSensor/hyperion/hLibrary.h"
 
 #ifdef _WIN32
 void sleep(double seconds)

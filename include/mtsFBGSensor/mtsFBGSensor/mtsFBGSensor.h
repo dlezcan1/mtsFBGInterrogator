@@ -4,7 +4,7 @@
 #include <cisstCommon.h>
 #include <cisstMultiTask.h>
 
-#include "mtsFBGSensor/Interrogator.h"
+#include "Interrogator.h"
 
 class CISST_EXPORT mtsFBGSensor : public mtsTaskContinuous 
 {

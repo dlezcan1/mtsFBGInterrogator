@@ -1,6 +1,6 @@
-#include "mtsFBGSensor/Interrogator.h"
+#include "mtsFBGSensor/mtsFBGSensor/Interrogator.h"
 
-#include "hyperion/HyperionInterrogator.h"
+#include "mtsFBGSensor/hyperion/HyperionInterrogator.h"
 
 Interrogator* InterrogatorFactory::CreateInterrogator(const InterrogatorType& type, const std::string& ipAddress, const unsigned int port)
 {

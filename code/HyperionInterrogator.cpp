@@ -1,4 +1,4 @@
-#include "hyperion/HyperionInterrogator.h"
+#include "mtsFBGSensor/hyperion/HyperionInterrogator.h"
 
 #include <cisstCommon/cmnLogger.h>
 

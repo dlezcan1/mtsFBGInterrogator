@@ -43,7 +43,7 @@
 #endif
 
 
-#include "hyperion/hCommLibrary.h"
+#include "mtsFBGSensor/hyperion/hCommLibrary.h"
 
 
 //------------------------------------------------------------------------------------

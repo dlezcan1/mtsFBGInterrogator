@@ -1,4 +1,4 @@
-#include "mtsFBGSensor/mtsFBGSensor.h"
+#include "mtsFBGSensor/mtsFBGSensor/mtsFBGSensor.h"
 
 CMN_IMPLEMENT_SERVICES_DERIVED(mtsFBGSensor, mtsTaskContinuous);
 

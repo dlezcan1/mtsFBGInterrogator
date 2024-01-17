@@ -1,4 +1,4 @@
-#include "mtsFBGTool/ThreeDOFTool.h"
+#include "mtsFBGSensor/mtsFBGTool/ThreeDOFTool.h"
 
 CMN_IMPLEMENT_SERVICES(ThreeDOFTool);
 

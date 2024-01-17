@@ -1,4 +1,4 @@
-#include "mtsFBGTool/GreenDualTool.h"
+#include "mtsFBGSensor/mtsFBGTool/GreenDualTool.h"
 
 CMN_IMPLEMENT_SERVICES(GreenDualTool);
 

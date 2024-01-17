@@ -1,4 +1,4 @@
-#include "mtsFBGTool/UtilMath/BernsteinPolynomial.h"
+#include "mtsFBGSensor/mtsFBGTool/UtilMath/BernsteinPolynomial.h"
 
 #include <algorithm>
 

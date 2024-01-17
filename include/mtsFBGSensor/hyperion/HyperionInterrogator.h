@@ -5,7 +5,7 @@
 
 #include "hLibrary.h"
 
-#include "mtsFBGSensor/Interrogator.h"
+#include "mtsFBGSensor/mtsFBGSensor/Interrogator.h"
 
 class HyperionInterrogator : public Interrogator
 {
