@@ -12,6 +12,8 @@ mtsFBGTool::mtsFBGTool(const std::string& taskName) :
     m_FilterOneEuroScleraForceX(200, 1.5, 1.0, 1.0),
     m_FilterOneEuroScleraForceY(200, 1.5, 1.0, 1.0)
 {
+    m_ForcesTipCF.Zeros();
+    m_ForcesScleraCF.Zeros();
 }
 
 mtsFBGTool::~mtsFBGTool()
@@ -59,13 +61,16 @@ void mtsFBGTool::SetupInterfaces()
         return;
     }
 
-    providedInterface->AddCommandReadState(m_StateTable, m_Forces,           "GetMeasuredCartesianForces");
-    providedInterface->AddCommandReadState(m_StateTable, m_ForcesTip,        "GetMeasuredCartesianForcesTip");
-    providedInterface->AddCommandReadState(m_StateTable, m_ForcesTipNorm,    "GetMeasuredCartesianForcesTipNorm");
-    providedInterface->AddCommandReadState(m_StateTable, m_ForcesSclera,     "GetMeasuredCartesianForcesSclera");
-    providedInterface->AddCommandReadState(m_StateTable, m_ForcesScleraNorm, "GetMeasuredCartesianForcesScleraNorm");
-    providedInterface->AddCommandReadState(m_StateTable, m_ForcesNorm,        "GetMeasuredCartesianForceNorm");
-    providedInterface->AddCommandReadState(m_StateTable, m_ForcesDirection,   "GetMeasuredCartesianForceDirection");
+    providedInterface->AddCommandReadState(m_StateTable, m_Forces,            "GetMeasuredVectorCartesianForces");
+    providedInterface->AddCommandReadState(m_StateTable, m_ForcesTip,         "GetMeasuredVectorCartesianForcesTip");
+    providedInterface->AddCommandReadState(m_StateTable, m_ForcesTipNorm,     "GetMeasuredVectorCartesianForcesTipNorm");
+    providedInterface->AddCommandReadState(m_StateTable, m_ForcesSclera,      "GetMeasuredVectorCartesianForcesSclera");
+    providedInterface->AddCommandReadState(m_StateTable, m_ForcesScleraNorm,  "GetMeasuredVectorCartesianForcesScleraNorm");
+    providedInterface->AddCommandReadState(m_StateTable, m_ForcesNorm,        "GetMeasuredVectorCartesianForceNorm");
+    providedInterface->AddCommandReadState(m_StateTable, m_ForcesDirection,   "GetMeasuredVectorCartesianForceDirection");
+
+    providedInterface->AddCommandReadState(m_StateTable, m_ForcesTipCF,        "GetMeasuredCartesianForcesTip");
+    providedInterface->AddCommandReadState(m_StateTable, m_ForcesScleraCF,     "GetMeasuredCartesianForcesSclera");
     
     providedInterface->AddCommandRead(&FBGToolInterface::GetToolName, m_FBGTool.get(), "GetToolName");
 
@@ -137,4 +142,11 @@ void mtsFBGTool::Run()
     m_ForcesDirection[0] = atan2(m_Forces[1], m_Forces[0]);
     if (m_Forces.size() > 2)
         m_ForcesDirection[1] = atan2(m_Forces[2], m_Forces[1]);
+
+    // assign wrenches
+    m_ForcesTipCF[0] = m_ForcesTip[0];
+    m_ForcesTipCF[1] = m_ForcesTip[1];
+
+    m_ForcesScleraCF[0] = m_ForcesSclera[0];
+    m_ForcesScleraCF[1] = m_ForcesSclera[1];
 }

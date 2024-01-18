@@ -34,29 +34,42 @@ int main(int argc, char* argv[])
         "sensor/measured_wavelengths"
     );
 
-    // rosBridge.AddPublisherFromCommandRead<vctDoubleVec, geometry_msgs::Wrench>(
-    //     "RequiresFBGTool",
-    //     "GetMeasuredCartesianForces",
-    //     "tool/measured_forces_cf"
-    // );
+    rosBridge.AddPublisherFromCommandRead<vctDoubleVec, cisst_msgs::vctDoubleVec>(
+        "RequiresFBGTool",
+        "GetMeasuredVectorCartesianForces",
+        "tool/deprecated/measured_forces_cf"
+    ); // THIS IS DEPRECATED: FROM PREVIOUS IMPLEMENTATION. UPDATING TO vct6 -> geometry_msgs::Wrench
 
-    // rosBridge.AddPublisherFromCommandRead<vctDoubleVec, geometry_msgs::Wrench>(
-    //     "RequiresFBGTool",
-    //     "GetMeasuredCartesianForcesTip",
-    //     "tool/measured_forces_tip_cf"
-    // );
+    rosBridge.AddPublisherFromCommandRead<vctDoubleVec, cisst_msgs::vctDoubleVec>(
+        "RequiresFBGTool",
+        "GetMeasuredVectorCartesianForcesTip",
+        "tool/deprecated/measured_forces_tip_cf"
+    ); // THIS IS DEPRECATED: FROM PREVIOUS IMPLEMENTATION. UPDATING TO vct6 -> geometry_msgs::Wrench
 
-    // rosBridge.AddPublisherFromCommandRead<vctDoubleVec, geometry_msgs::Wrench>(
-    //     "RequiresFBGTool",
-    //     "GetMeasuredCartesianForcesSclera",
-    //     "tool/measured_forces_sclera_cf"
-    // );
+    rosBridge.AddPublisherFromCommandRead<vctDoubleVec, cisst_msgs::vctDoubleVec>(
+        "RequiresFBGTool",
+        "GetMeasuredVectorCartesianForcesSclera",
+        "tool/deprecated/measured_forces_sclera_cf"
+    ); // THIS IS DEPRECATED: FROM PREVIOUS IMPLEMENTATION. UPDATING TO vct6 -> geometry_msgs::Wrench
 
-    // rosBridge.AddPublisherFromCommandRead<mtsStdString, std_msgs::String>(
-    //     "RequiresFBGTool",
-    //     "GetToolName",
-    //     "tool/name"
-    // );
+
+    rosBridge.AddPublisherFromCommandRead<vct6, geometry_msgs::WrenchStamped>(
+        "RequiresFBGTool",
+        "GetMeasuredCartesianForcesTip",
+        "tool/measured_forces_tip_cf"
+    );
+
+    rosBridge.AddPublisherFromCommandRead<vct6, geometry_msgs::WrenchStamped>(
+        "RequiresFBGTool",
+        "GetMeasuredCartesianForcesSclera",
+        "tool/measured_forces_sclera_cf"
+    );
+
+    rosBridge.AddPublisherFromCommandRead<mtsStdString, std_msgs::String>(
+        "RequiresFBGTool",
+        "GetToolName",
+        "tool/name"
+    );
 
     // Connect components
     manager->AddComponent(&rosBridge);

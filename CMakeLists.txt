@@ -88,26 +88,22 @@ endif ()
 
 # catkin/ROS paths
 cisst_set_output_path ()
-message (${catkin_INCLUDE_DIRS})
 include_directories (${catkin_INCLUDE_DIRS})
-catkin_package(
-    INCLUDE_DIRS include
-    CATKIN_DEPENDS ${catkin_REQUIRED_COMPONENTS}
-)
 
 # add all config files for this component
 cisst_add_config_files (mtsFBGSensor)
 
 add_library (mtsFBGSensor
     ${mtsFBGSensor_SOURCE_FILES}
-    ${mtsFBGSensor_HEADER_FILES}
 )
-
 set_target_properties (mtsFBGSensor PROPERTIES
     VERSION ${mts_fbg_sensor_VERSION}
     FOLDER "mtsFBGSensor"
     PUBLIC_HEADER ${mtsFBGSensor_HEADER_FILES}
 )
+target_include_directories(mtsFBGSensor PUBLIC 
+        ${CMAKE_CURRENT_SOURCE_DIR}/include
+    )
 cisst_target_link_libraries (mtsFBGSensor ${REQUIRED_CISST_LIBRARIES})
 
 # executable
@@ -117,7 +113,7 @@ cisst_target_link_libraries(fbg_force_tool ${REQUIRED_CISST_LIBRARIES})
 
 # Install target for headers and library
 install (
-    DIRECTORY "${mtsFBGSensor_SOURCE_DIR}/include/mtsFBGSensor"
+    DIRECTORY "${mts_fbg_sensor_SOURCE_DIR}/include"
     DESTINATION include
     COMPONENT mtsFBGSensor-dev
     PATTERN .svn EXCLUDE
@@ -137,7 +133,7 @@ install(TARGETS mtsFBGSensor # fbg_force_tool
     PUBLIC_HEADER DESTINATION ${CATKIN_GLOBAL_INCLUDE_DESTINATION}
 )
 
-install (DIRECTORY include/
+install (DIRECTORY include/mtsFBGSensor
     DESTINATION ${CATKIN_GLOBAL_INCLUDE_DESTINATION}
     PATTERN .svn EXCLUDE
 )

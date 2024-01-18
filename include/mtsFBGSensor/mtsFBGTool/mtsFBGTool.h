@@ -64,6 +64,9 @@ private:
     mtsDoubleVec m_Forces;
     mtsDoubleVec m_ForcesTip;
     mtsDoubleVec m_ForcesSclera;
+
+    vct6         m_ForcesTipCF;
+    vct6         m_ForcesScleraCF;
     
     mtsDouble    m_ForcesNorm;
     mtsDouble    m_ForcesTipNorm;
