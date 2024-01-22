@@ -11,6 +11,7 @@ set (REQUIRED_CISST_LIBRARIES
     cisstCommon
     cisstVector
     cisstOSAbstraction
+    cisstNumerical
     cisstMultiTask
     cisstParameterTypes
 )
@@ -88,7 +89,12 @@ endif ()
 
 # catkin/ROS paths
 cisst_set_output_path ()
+message (${catkin_INCLUDE_DIRS})
 include_directories (${catkin_INCLUDE_DIRS})
+catkin_package(
+    INCLUDE_DIRS include
+    CATKIN_DEPENDS ${catkin_REQUIRED_COMPONENTS}
+)
 
 # add all config files for this component
 cisst_add_config_files (mtsFBGSensor)
@@ -99,7 +105,7 @@ add_library (mtsFBGSensor
 set_target_properties (mtsFBGSensor PROPERTIES
     VERSION ${mts_fbg_sensor_VERSION}
     FOLDER "mtsFBGSensor"
-    PUBLIC_HEADER ${mtsFBGSensor_HEADER_FILES}
+    PUBLIC_HEADER "${mtsFBGSensor_HEADER_FILES}"
 )
 target_include_directories(mtsFBGSensor PUBLIC 
         ${CMAKE_CURRENT_SOURCE_DIR}/include
@@ -133,7 +139,7 @@ install(TARGETS mtsFBGSensor # fbg_force_tool
     PUBLIC_HEADER DESTINATION ${CATKIN_GLOBAL_INCLUDE_DESTINATION}
 )
 
-install (DIRECTORY include/mtsFBGSensor
+install (DIRECTORY include/
     DESTINATION ${CATKIN_GLOBAL_INCLUDE_DESTINATION}
     PATTERN .svn EXCLUDE
 )
