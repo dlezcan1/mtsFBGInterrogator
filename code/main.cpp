@@ -16,8 +16,28 @@ int main(int argc, char* argv[])
     mtsFBGTool   fbgToolTask("FBGToolTask");
 
     mtsComponentManager* manager = mtsManagerLocal::GetInstance();
+    
+    // command line options
+    cmnCommandLineOptions options;
+    std::string jsonFBGSensorConfigFile;
+    std::string jsonFBGToolConfigFile;
 
-    fbgSensorTask.Configure("192.168.1.101"); // FIXME: update to JSON file/argument
+    options.AddOptionOneValue(
+        "s", "json-config-sensor",
+        "The FBG Sensor/interrogator's configuration",
+        cmnCommandLineOptions::REQUIRED_OPTION,
+        &jsonFBGSensorConfigFile
+    );
+
+    options.AddOptionOneValue(
+        "t", "json-config-tool",
+        "The FBG Tool's configuration",
+        cmnCommandLineOptions::REQUIRED_OPTION,
+        &jsonFBGToolConfigFile
+    );
+
+    // Configure tasks
+    fbgSensorTask.Configure(jsonFBGSensorConfigFile);
     fbgToolTask.Configure(""); // FIXME: update to FBG tool's JSON config file
 
     manager->AddComponent(&fbgSensorTask);

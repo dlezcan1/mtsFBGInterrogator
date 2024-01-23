@@ -28,8 +28,8 @@ Interrogator* InterrogatorFactory::CreateInterrogator(const InterrogatorType& ty
             break;
 
         default:
-            std::cout << "Interrogator type not implemented!" << std::endl;
-            port = 0;
+            std::cerr << "Interrogator type not implemented!" << std::endl;
+            port = -1;
             break;
     }
 

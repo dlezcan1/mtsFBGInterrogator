@@ -12,7 +12,7 @@ mtsFBGSensor::mtsFBGSensor(const mtsTaskContinuousConstructorArg& arg) : mtsTask
     SetupInterfaces();
 }
 
-mtsFBGSensor::~mtsFBGSensor() 
+mtsFBGSensor::~mtsFBGSensor()
 {
     if (m_Interrogator)
         delete m_Interrogator;
@@ -21,16 +21,94 @@ mtsFBGSensor::~mtsFBGSensor()
 
 void mtsFBGSensor::Configure(const std::string & fileName)
 {
-    std::string ipAddress = fileName;
-    
+    std::string      ipAddress;
+    InterrogatorType interrogatorType;
+
+    try
+    {
+        std::ifstream jsonStream;
+        Json::Value   jsonConfig;
+        Json::Reader  jsonReader;
+
+        jsonStream.open(fileName.c_str());
+
+        if (!jsonReader.parse(jsonStream, jsonConfig)) {
+            CMN_LOG_CLASS_INIT_ERROR << "Configure " << this->GetName()
+                                     << ": failed to parse galil controller configuration file \""
+                                     << fileName << "\"\n"
+                                     << jsonReader.getFormattedErrorMessages();
+            return;
+        }
+
+        CMN_LOG_CLASS_INIT_VERBOSE << "Configure: " << this->GetName()
+                                   << " using file \"" << fileName << "\"" << std::endl
+                                   << "----> content of galil controller configuration file: " << std::endl
+                                   << jsonConfig << std::endl
+                                   << "<----" << std::endl;
+
+        if (!jsonConfig.isMember("IP_Address"))
+        {
+            CMN_LOG_CLASS_INIT_ERROR << "Configure " << this->GetName()
+                                     << ": make sure the configuration file \""
+                                     << fileName << "\" has the \"IP_Address\" field"
+                                     << std::endl;
+            return;
+        }
+        ipAddress = jsonConfig["IP_Address"].asString();
+
+        if (!jsonConfig.isMember("Interrogator_Type"))
+        {
+            CMN_LOG_CLASS_INIT_ERROR << "Configure " << this->GetName()
+                                     << ": make sure the configuration file \""
+                                     << fileName << "\" has the \"Interrogator_Type\" field"
+                                     << std::endl;
+            return;
+        }
+        std::string type = jsonConfig["Interrogator_Type"].asString();
+        std::transform(
+            type.begin(),
+            type.end(),
+            type.begin(),
+            [] (unsigned char c) {return std::tolower(c);}
+        );
+
+        if (type == "HYPERION")
+            interrogatorType = InterrogatorType::HYPERION;
+
+        else if (type == "SI155")
+            interrogatorType = InterrogatorType::SI155;
+
+        else if (type == "SM130")
+            interrogatorType = InterrogatorType::SM130;
+
+        else
+        {
+            CMN_LOG_CLASS_INIT_ERROR << "Configure " << this->GetName()
+                                     << ": the configuration file \""
+                                     << fileName << "\" has an invalid \"Interrogator_Type\" field: \""
+                                     << type << "\""
+                                     << std::endl;
+        }
+
+    }
+    catch(...)
+    {
+        CMN_LOG_CLASS_INIT_ERROR << "Configure " << this->GetName()
+                                 << ": make sure the file \""
+                                 << fileName << "\" is in JSON format"
+                                 << std::endl;
+    }
+
+
+
     m_Interrogator = InterrogatorFactory::CreateInterrogator(
-        InterrogatorType::HYPERION, // FIXME: change to config from json file
-        ipAddress                   // FIXME: change to config from json file
+        interrogatorType,
+        ipAddress
     );
 
     if (!m_Interrogator)
     {
-        CMN_LOG_CLASS_INIT_ERROR << "Error creating Hyperion interrogator @" << ipAddress << std::endl;
+        CMN_LOG_CLASS_INIT_ERROR << "Error creating interrogator @ " << ipAddress << std::endl;
     }
 
     m_Interrogator->StreamPeaks(); // FIXME: change to config from json file
@@ -64,7 +142,7 @@ void mtsFBGSensor::Cleanup()
         return;
 
     m_Interrogator->Disconnect();
-    
+
 }
 
 void mtsFBGSensor::SetupInterfaces()
@@ -75,7 +153,7 @@ void mtsFBGSensor::SetupInterfaces()
     mtsInterfaceProvided* intfProvided = this->AddInterfaceProvided("ProvidesFBGSensor");
     if (!intfProvided)
     {
-        CMN_LOG_CLASS_INIT_ERROR << "Error adding \"ProvidesFBGSensor\" provided interface \"" 
+        CMN_LOG_CLASS_INIT_ERROR << "Error adding \"ProvidesFBGSensor\" provided interface \""
                                  << this->GetName()
                                  << "\"!" << std::endl;
         return;
