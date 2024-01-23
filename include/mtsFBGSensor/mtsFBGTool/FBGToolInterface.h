@@ -4,7 +4,7 @@
 #include <cisstMultiTask.h>
 #include <cisstVector/vctDynamicVector.h>
 
-class FBGToolInterface : public cmnGenericObject
+class CISST_EXPORT FBGToolInterface : public cmnGenericObject
 {
 public:
     virtual ~FBGToolInterface(){}

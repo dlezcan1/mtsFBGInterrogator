@@ -6,7 +6,7 @@
 #include "FBGToolInterface.h"
 #include "mtsFBGSensor/SensorFilters/SensorOneEuroFilter.h"
 
-class mtsFBGTool : public mtsTaskContinuous
+class CISST_EXPORT mtsFBGTool : public mtsTaskContinuous
 {
     CMN_DECLARE_SERVICES(CMN_NO_DYNAMIC_CREATION, CMN_LOG_LOD_RUN_VERBOSE);
 public:

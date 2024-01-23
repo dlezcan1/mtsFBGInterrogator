@@ -3,7 +3,7 @@
 #include <cisstCommon.h>
 #include <cisstMultiTask.h>
 
-class BernsteinPolynomial : public cmnGenericObject
+class CISST_EXPORT BernsteinPolynomial : public cmnGenericObject
 {
     CMN_DECLARE_SERVICES(CMN_NO_DYNAMIC_CREATION, CMN_LOG_LOD_RUN_VERBOSE);
 public:

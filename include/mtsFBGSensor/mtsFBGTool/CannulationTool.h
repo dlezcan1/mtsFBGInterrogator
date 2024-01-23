@@ -4,7 +4,7 @@
 
 #include "FBGToolInterface.h"
 
-class CannulationTool : public FBGToolInterface
+class CISST_EXPORT CannulationTool : public FBGToolInterface
 {
     CMN_DECLARE_SERVICES(CMN_NO_DYNAMIC_CREATION, CMN_LOG_LOD_RUN_VERBOSE);
 
