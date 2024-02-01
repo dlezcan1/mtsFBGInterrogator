@@ -4,40 +4,62 @@ CMN_IMPLEMENT_SERVICES(GreenDualTool);
 
 GreenDualTool::GreenDualTool(const std::string& filename)
 {
-    // TODO: load json parameters
-    // FIXME: assign tool name
-    m_ToolName = "GreenDualTool";
-     
-    // FIXME
-    m_DistanceScleraFBGs = 5.8891; 
+    Json::Value   jsonConfig;
+    try
+    {
+        std::ifstream jsonStream;
+        Json::Reader  jsonReader;
 
-    // FIXME: assign base wavelengths
-    m_BaseWavelengths.SetSize(9);
-    m_BaseWavelengths.Zeros();
+        jsonStream.open(filename.c_str());
 
-    // FIXME: assign calibration matrices
-    m_CalibrationMatrixTip.SetSize(2, 3);
-    m_CalibrationMatrixTip.SetAll(1.0);
+        if (!jsonReader.parse(jsonStream, jsonConfig)) {
+            CMN_LOG_CLASS_INIT_ERROR << "Configure GreenDualTool"
+                                     << ": failed to parse FBG tool configuration file \""
+                                     << filename << "\"\n"
+                                     << jsonReader.getFormattedErrorMessages();
+            return;
+        }
 
-    m_CalibrationMatrixSclera2.SetSize(2, 3);
-    m_CalibrationMatrixSclera2.SetAll(1.0);
+        CMN_LOG_CLASS_INIT_VERBOSE << "Configure: GreenDualTool"
+                                   << " using file \"" << filename << "\"" << std::endl
+                                   << "----> content of FBG tool configuration file: " << std::endl
+                                   << jsonConfig << std::endl
+                                   << "<----" << std::endl;
 
-    m_CalibrationMatrixSclera3.SetSize(2, 3);
-    m_CalibrationMatrixSclera3.SetAll(1.0);
-
-    // FIXME: assign tip wavelength convertion matrices
-    m_WLConversionTipToSclera2.SetSize(3, 3);
-    m_WLConversionTipToSclera2.Zeros();
-
-    m_WLConversionTipToSclera3.SetSize(3,3);
-    m_WLConversionTipToSclera3.Zeros();
-
-    // FIXME: assign indices
-    m_IndicesTip     = {0, 3, 6};
-    m_IndicesSclera2 = {1, 4, 7};
-    m_IndicesSclera3 = {2, 5, 8};
+        // Handle which FBG tool is used
+        if (!jsonConfig.isMember("Device_Type"))
+        {
+            CMN_LOG_CLASS_INIT_ERROR << "Configure GreenDualTool"
+                                     << ": make sure the configuration file \""
+                                     << filename << "\" has the \"Device_Type\" field"
+                                     << std::endl;
+            return;
+        }
 
 
+
+    }
+    catch(...)
+    {
+        CMN_LOG_CLASS_INIT_ERROR << "Configure GreenDualTool"
+                                 << ": make sure the file \""
+                                 << filename << "\" is in JSON format"
+                                 << std::endl;
+    }
+    
+    // configure tool
+    m_ToolName           = jsonConfig["Tool_Name"].asString();
+    m_DistanceScleraFBGs = jsonConfig["Distance_Sclera_FBG"].asDouble();
+
+    m_BaseWavelengths.DeSerializeTextJSON(jsonConfig["Base_Wavelengths"]);
+    m_CalibrationMatrixTip.DeSerializeTextJSON(jsonConfig["Calibration_Matrix_Tip"]);
+    m_CalibrationMatrixSclera2.DeSerializeTextJSON(jsonConfig["Calibration_Matrix_Sclera2"]);
+    m_CalibrationMatrixSclera3.DeSerializeTextJSON(jsonConfig["Calibration_Matrix_Sclera3"]);
+
+    AssignWavelengthIndicesFromJSON(jsonConfig["Wavelength_Indices_Tip"],     m_IndicesTip);
+    AssignWavelengthIndicesFromJSON(jsonConfig["Wavelength_Indices_Sclera2"], m_IndicesSclera2);
+    AssignWavelengthIndicesFromJSON(jsonConfig["Wavelength_Indices_Sclera3"], m_IndicesSclera3);
+    
 } // constructor
 
 GreenDualTool::~GreenDualTool(){

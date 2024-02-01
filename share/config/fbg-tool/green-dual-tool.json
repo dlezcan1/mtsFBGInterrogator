@@ -1,0 +1,22 @@
+{
+    "Tool_Name": "GreenDualTool",
+    "FBGSensor_Num_Peaks": 9,
+    "FBGSensor_Num_Samples": 200,
+    "Distance_Sclera_FBGs": 5.8891,
+    "Wavelength_Indices_Tip": [0, 3, 6],
+    "Wavelength_Indices_Sclera2": [1, 4, 7],
+    "Wavelength_Indices_Sclera3": [2, 5, 8],
+    "Base_Wavelengths": [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    "Calibration_Matrix_Tip": [
+        [ 345.9391,    289.5515,    -635.4906],
+        [-656.8331,    585.9407,    70.8924]
+    ],
+    "Calibration_Matrix_Sclera2": [
+        [ 398.9955,     1122.2410,    -2521.2366],
+        [-2117.7646,    2408.8878,    -291.1231]
+    ],
+    "Calibration_Matrix_Sclera3": [
+        [1249.87917,    973.7497,   -2223.6288],
+        [-1878.5043,    2218.563,    -340.0587]
+    ]
+}

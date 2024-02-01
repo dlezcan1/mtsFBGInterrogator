@@ -69,7 +69,7 @@ void mtsFBGSensor::Configure(const std::string & fileName)
             type.begin(),
             type.end(),
             type.begin(),
-            [] (unsigned char c) {return std::tolower(c);}
+            [] (unsigned char c) {return std::toupper(c);}
         );
 
         if (type == "HYPERION")

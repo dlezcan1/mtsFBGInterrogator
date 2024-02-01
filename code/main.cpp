@@ -38,7 +38,7 @@ int main(int argc, char* argv[])
 
     // Configure tasks
     fbgSensorTask.Configure(jsonFBGSensorConfigFile);
-    fbgToolTask.Configure(""); // FIXME: update to FBG tool's JSON config file
+    fbgToolTask.Configure(jsonFBGToolConfigFile); // FIXME: update to FBG tool's JSON config file
 
     manager->AddComponent(&fbgSensorTask);
     manager->AddComponent(&fbgToolTask);

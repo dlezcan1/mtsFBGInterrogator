@@ -23,17 +23,89 @@ mtsFBGTool::~mtsFBGTool()
 
 void mtsFBGTool::Configure(const std::string& filename)
 {
-    // TODO: handle json configuration
+    FBGToolDevices device;
+    std::string    deviceConfigFile = filename;
+    size_t numPeaks   = -1;  // invalid and don't configure the peak container yet. Dynamically configures
+    size_t numSamples = m_WavelengthPeakContainer.NumSamples; // default value
 
-    FBGToolDevices device        = FBGToolDevices::GreenDual; // FIXME
-    std::string deviceConfigFile = filename;                  // FIXME
+    try
+    {
+        std::ifstream jsonStream;
+        Json::Value   jsonConfig;
+        Json::Reader  jsonReader;
+
+        jsonStream.open(filename.c_str());
+
+        if (!jsonReader.parse(jsonStream, jsonConfig)) {
+            CMN_LOG_CLASS_INIT_ERROR << "Configure " << this->GetName()
+                                     << ": failed to parse galil controller configuration file \""
+                                     << filename << "\"\n"
+                                     << jsonReader.getFormattedErrorMessages();
+            return;
+        }
+
+        CMN_LOG_CLASS_INIT_VERBOSE << "Configure: " << this->GetName()
+                                   << " using file \"" << filename << "\"" << std::endl
+                                   << "----> content of FBG tool configuration file: " << std::endl
+                                   << jsonConfig << std::endl
+                                   << "<----" << std::endl;
+
+        // Handle which FBG tool is used
+        if (!jsonConfig.isMember("Tool_Name"))
+        {
+            CMN_LOG_CLASS_INIT_ERROR << "Configure " << this->GetName()
+                                     << ": make sure the configuration file \""
+                                     << filename << "\" has the \"Tool_Name\" field"
+                                     << std::endl;
+            return;
+        }
+        std::string deviceType = jsonConfig["Tool_Name"].asString();
+        std::transform(
+            deviceType.begin(),
+            deviceType.end(),
+            deviceType.begin(),
+            [] (unsigned char c) {return std::tolower(c);}
+        );
+
+        if (deviceType == "greendualtool")
+            device = FBGToolDevices::GreenDual;
+
+        else if (deviceType == "cannulation")
+            device = FBGToolDevices::Cannulation;
+
+        else if (deviceType == "threedof")
+            device = FBGToolDevices::ThreeDOF;
+
+        else
+        {
+            CMN_LOG_CLASS_INIT_ERROR << "Configure " << this->GetName()
+                                     << ": the configuration file \""
+                                     << filename << "\" has an invalid \"Device_Type\" field: \""
+                                     << deviceType << "\""
+                                     << std::endl;
+        }
+
+        if (jsonConfig.isMember("FBGSensor_Num_Peaks"))
+            numPeaks = jsonConfig["FBGSensor_Num_Peaks"].asInt();
+
+        if (jsonConfig.isMember("FBGSensor_Num_Samples"))
+            numSamples = jsonConfig["FBGSensor_Num_Samples"].asInt();
+        
+
+    }
+    catch(...)
+    {
+        CMN_LOG_CLASS_INIT_ERROR << "Configure " << this->GetName()
+                                 << ": make sure the file \""
+                                 << filename << "\" is in JSON format"
+                                 << std::endl;
+    }
 
     m_FBGTool = FBGToolFactory::GetFBGTool(device, deviceConfigFile);
 
     // Setup peak container
-    size_t numPeaks   = 9;   // FIXME: from deviceConfigFile
-    size_t numSamples = 200; // FIXME
-    m_WavelengthPeakContainer.Configure(numPeaks, numSamples);
+    if (numPeaks > 0)
+        m_WavelengthPeakContainer.Configure(numPeaks, numSamples);
 }   
 
 void mtsFBGTool::SetupInterfaces()
@@ -116,6 +188,14 @@ void mtsFBGTool::Run()
         mtsExecutionResult result = m_ReadStateFBGPeaks(peakSample); // may need to check peak state updated
         if (!result.IsOK())
             continue;
+
+        if (
+            !m_WavelengthPeakContainer.IsConfigured
+            && (m_WavelengthPeakContainer.Peaks.cols() != peakSample.size())
+        )
+        {
+            m_WavelengthPeakContainer.Configure(peakSample.size(), m_WavelengthPeakContainer.NumSamples);
+        }
 
         m_WavelengthPeakContainer.Update(peakSample);
     }

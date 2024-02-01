@@ -71,4 +71,11 @@ protected:
         return partitionedWavelengths;
     }
 
+    static void AssignWavelengthIndicesFromJSON(const Json::Value& jsonConfigValue, std::vector<size_t>& wavelengthIndices)
+    {
+        for (Json::Value::ArrayIndex i=0; i != jsonConfigValue.size(); i++ )
+            wavelengthIndices.push_back(jsonConfigValue[i].asUInt());
+            
+    }
+
 }; // abstract class: FBGToolInterface

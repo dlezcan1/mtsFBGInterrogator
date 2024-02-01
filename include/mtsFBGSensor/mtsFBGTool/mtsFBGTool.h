@@ -28,10 +28,11 @@ private:
 
     // Container to handle number of peaks
     struct {
-        size_t       NumSamples;
         mtsDoubleMat Peaks;
         size_t       CurrentIndex;
+        size_t       NumSamples = 200;
         bool         IsFull = false;
+        bool         IsConfigured = false;
 
         void Configure(size_t numPeakSignals, size_t numSamples = 0)
         {
@@ -40,6 +41,7 @@ private:
             
             Peaks.SetSize(NumSamples, numPeakSignals);
             Peaks.Zeros();
+            IsConfigured = true;
         }
 
         void Update(const mtsDoubleVec& peaks)

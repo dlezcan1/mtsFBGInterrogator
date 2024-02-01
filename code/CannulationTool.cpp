@@ -4,16 +4,54 @@ CMN_IMPLEMENT_SERVICES(CannulationTool);
 
 CannulationTool::CannulationTool(const std::string& filename)
 {
-    // FIXME: assign tool name
-    m_ToolName = "CannulationTool";
+    Json::Value   jsonConfig;
+    try
+    {
+        std::ifstream jsonStream;
+        Json::Reader  jsonReader;
 
-    // FIXME: assign base wavelengths
-    m_BaseWavelengths.SetSize(3);
-    m_BaseWavelengths.Zeros();
+        jsonStream.open(filename.c_str());
 
-    // FIXME: assign calibration matrices
-    m_CalibrationMatrixTip.SetSize(2, 3);
-    m_CalibrationMatrixTip.SetAll(1.0);
+        if (!jsonReader.parse(jsonStream, jsonConfig)) {
+            CMN_LOG_CLASS_INIT_ERROR << "Configure CannulationTool"
+                                     << ": failed to parse FBG tool configuration file \""
+                                     << filename << "\"\n"
+                                     << jsonReader.getFormattedErrorMessages();
+            return;
+        }
+
+        CMN_LOG_CLASS_INIT_VERBOSE << "Configure: CannulationTool"
+                                   << " using file \"" << filename << "\"" << std::endl
+                                   << "----> content of FBG tool configuration file: " << std::endl
+                                   << jsonConfig << std::endl
+                                   << "<----" << std::endl;
+
+        // Handle which FBG tool is used
+        if (!jsonConfig.isMember("Device_Type"))
+        {
+            CMN_LOG_CLASS_INIT_ERROR << "Configure CannulationTool"
+                                     << ": make sure the configuration file \""
+                                     << filename << "\" has the \"Device_Type\" field"
+                                     << std::endl;
+            return;
+        }
+
+
+
+    }
+    catch(...)
+    {
+        CMN_LOG_CLASS_INIT_ERROR << "Configure CannulationTool"
+                                 << ": make sure the file \""
+                                 << filename << "\" is in JSON format"
+                                 << std::endl;
+    }
+    
+    // configure tool
+    m_ToolName = jsonConfig["Tool_Name"].asString();
+
+    m_BaseWavelengths.DeSerializeTextJSON(jsonConfig["Base_Wavelengths"]);
+    m_CalibrationMatrixTip.DeSerializeTextJSON(jsonConfig["Calibration_Matrix_Tip"]);
 }
 
 CannulationTool::~CannulationTool(){
