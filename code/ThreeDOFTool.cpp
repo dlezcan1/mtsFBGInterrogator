@@ -56,15 +56,15 @@ ThreeDOFTool::ThreeDOFTool(const std::string& filename)
     AssignWavelengthIndicesFromJSON(jsonConfig["Wavelength_Indices_Tip"], m_IndicesTip);
 
     // handle the polynomial for sclera force calculation
-    if (!jsonConfig.isMember("Calibration_Sclera_Polynomial"))
+    if (!jsonConfig.isMember("Calibration_Polynomial_Sclera"))
     {
         CMN_LOG_CLASS_INIT_ERROR << "Configure ThreeDOFTool"
                                     << ": make sure the configuration file \""
-                                    << filename << "\" has the \"Calibration_Sclera_Polynomial\" field"
+                                    << filename << "\" has the \"Calibration_Polynomial_Sclera\" field"
                                     << std::endl;
-        throw std::runtime_error("\"Calibration_Sclera_Polynomial\" not in JSON configuration file.");
+        throw std::runtime_error("\"Calibration_Polynomial_Sclera\" not in JSON configuration file.");
     }
-    Json::Value jsonConfigScleraPoly = jsonConfig["Calibration_Sclera_Polynomial"];
+    Json::Value jsonConfigScleraPoly = jsonConfig["Calibration_Polynomial_Sclera"];
     mtsDoubleVec coeffs, boundsMin, boundsMax;
     coeffs.DeSerializeTextJSON(jsonConfigScleraPoly["Coefficients"]);
     boundsMin.DeSerializeTextJSON(jsonConfigScleraPoly["Bounds_Min"]);
