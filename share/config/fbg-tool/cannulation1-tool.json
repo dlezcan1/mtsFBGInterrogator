@@ -1,0 +1,12 @@
+{
+    "Tool_Name": "CANNULATION1",
+    "FBGSensor_Num_Peaks": 9,
+    "FBGSensor_Num_Samples": 200,
+    "Distance_Sclera_FBGs": 5.8891,
+    "Wavelength_Indices_Tip": [0, 3, 6],
+    "Base_Wavelengths": [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    "Calibration_Matrix_Tip": [
+        [ 170.30436, 303.72547, -474.02983],
+        [-308.15310, 344.47814, -36.32504]
+    ]
+}
