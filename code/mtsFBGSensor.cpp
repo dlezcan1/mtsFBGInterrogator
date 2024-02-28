@@ -167,7 +167,7 @@ void mtsFBGSensor::SetupInterfaces()
     }
 
     intfProvided->AddCommandRead(&mtsFBGSensor::GetNumberOfChannels,       this, "GetNumberOfChannels");
-    intfProvided->AddCommandQualifiedRead(&mtsFBGSensor::GetNumberOfPeaks, this, "GetNumberofPeaks");
+    intfProvided->AddCommandQualifiedRead(&mtsFBGSensor::GetNumberOfPeaks, this, "GetNumberOfPeaks");
 
     intfProvided->AddCommandVoidReturn(&mtsFBGSensor::Connect,    this, "Connect");
     intfProvided->AddCommandVoidReturn(&mtsFBGSensor::Disconnect, this, "Disonnect");
